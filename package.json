@@ -1,0 +1,27 @@
+{
+  "name": "nc_graphql_movieapi",
+  "version": "1.0.0",
+  "description": "*What is GraphQL?*\r - Innovation on top of GraphQL such as PostGraphile database. \r - Hasura gives GraphQL API on your DB for free.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Enowiz777/nc_graphql_movieAPI.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Enowiz777/nc_graphql_movieAPI/issues"
+  },
+  "homepage": "https://github.com/Enowiz777/nc_graphql_movieAPI#readme",
+  "dependencies": {
+    "apollo-server": "^3.11.1",
+    "graphql": "^16.6.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.20"
+  }
+}
