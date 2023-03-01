@@ -4,7 +4,8 @@
   "description": "*What is GraphQL?*\r - Innovation on top of GraphQL such as PostGraphile database. \r - Hasura gives GraphQL API on your DB for free.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon server.js"
   },
   "repository": {
     "type": "git",
@@ -18,10 +19,12 @@
   },
   "homepage": "https://github.com/Enowiz777/nc_graphql_movieAPI#readme",
   "dependencies": {
+    "@apollo/server": "^4.4.0",
     "apollo-server": "^3.11.1",
     "graphql": "^16.6.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.20"
-  }
+  },
+  "type": "module"
 }

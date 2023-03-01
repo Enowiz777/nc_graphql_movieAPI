@@ -742,4 +742,93 @@ npm init -y
 npm i apollo-server graphql
 # Install nodemon as a dev dependency.
 npm i nodemon -D
+# Create a server js and gitignore file
+touch server.js
+touch .gitignore
 ```
+"script" - add "dev":"nodemon server.js"
+
+server.js
+```js
+// implement ApolloServer and gql.
+import { ApolloServer, gql } from "apollo-server-express";
+
+```
+GraphQL documentation:
+https://www.apollographql.com/docs/apollo-server/getting-started/
+
+# Query Type
+- GraphQL needs to know the shape of the data before you start. 
+- REST API is collection of many URLs. 
+- Graph API is collection of many types. 
+- You are describing the types. 
+- Schema - Mongoose - you have to explain the shape. 
+- There are very nice documentation of what we need to do to create the schema. 
+
+This is from the documentation website.
+```js
+// Create a shape of the data - Define your GraphQL schema.
+
+const typeDefs = `#graphql
+  # Comments in GraphQL strings (such as this one) start with the hash (#) symbol.
+
+  # This "Book" type defines the queryable fields for every book in our data source.
+  type Book {
+    title: String
+    author: String
+  }
+
+  # The "Query" type is special: it lists all of the available queries that
+  # clients can execute, along with the return type for each. In this
+  # case, the "books" query returns an array of zero or more Books (defined above).
+  type Query {
+    books: [Book]
+  }
+`;
+```
+
+- Apollo studio allows you to interact the server. 
+- Query that we wrote shows
+-
+Input: 
+```js
+{
+  hello
+  text
+}
+```
+Output:
+```js
+{
+  "data": {
+    "hello": null,
+    "text": null
+  }
+}
+```
+
+- we have to write the code to produce the result after create a schema.
+- Scalar types are the ones that are built in to the GraphQL.
+- ex: Boolean, ID, String etc.
+
+```js
+const typeDefs = `
+    type User {
+        id: ID
+        username: String
+    }
+    type Tweet {
+        id: ID 
+        text: String
+        author: User
+    }
+    type Query {
+        allTweets: [Tweet]
+        tweet(id: ID): Tweet
+    }
+`;
+```
+- Tweet is created by a User. 
+- allTweets will give many Tweets.
+- tweet returns one Tweet. We don't know which tweet that we are talking about. We have to give the UID or ID to retrieve an exact Tweet that the person wants. 
+- These are explanation of types. 
