@@ -832,3 +832,71 @@ const typeDefs = `
 - allTweets will give many Tweets.
 - tweet returns one Tweet. We don't know which tweet that we are talking about. We have to give the UID or ID to retrieve an exact Tweet that the person wants. 
 - These are explanation of types. 
+
+## Mutation Type
+
+- Query in graphQL is like GET URL in REST API. 
+- Similar to POST in REST API.
+```js
+// User sending data and you are mutating the backend. 
+// User needs to send String value Tweet
+type Mutation {
+  
+  postTweet(text: String, userID: ID): Tweet
+  deleteTweet(id:ID): Boolean
+}
+```
+
+- POST tweet has an argument from the studio.
+- POST, PUT, DELETE are all inside mutation.
+- It makes sense because you are simply updating.
+- If you want your user to receive information - Query
+- If you want user to interact with DB - Mutation 
+
+- GraphQL studio
+
+Input:
+```js
+mutation {
+  postTweet(text:"Hello, first tweet", userId:"1") {
+    text
+  }
+}
+```
+
+Output:
+```js
+
+```
+
+- 
+
+## Non Nullable Field
+
+What does "!" do?
+- ! exclamanation mark
+- The error happens all of a sudden.
+- No error. 
+- Without ! - varaible can hold a value or a null
+- ! will require a value because a null value is unacceptable.
+- Get only list of only Tweets
+```js
+type Query {
+  allTweets: [Tweet!]!
+  tweet(id:ID!): Tweet
+}
+```
+
+## Recap
+
+- GraphQL schema language
+- Remember that the server wouldn't start if we didn't have the type Query{} - basic type. 
+- Whatever you but inside the type Query is something that the user can request. 
+- There are build-in types scalable type or you can create your own type - you have to describe the shape by creating a schema. 
+- name of the type and squire bracket. 
+- We can connect type with over. 
+- You start talking about mutation. 
+- You have some operation that changes the DB data. 
+- The point of graphQL is to make your intention clear. 
+- ! - it is not ok that the fields are null. 
+- 
