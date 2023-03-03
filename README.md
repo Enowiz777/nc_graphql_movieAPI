@@ -900,3 +900,223 @@ type Query {
 - The point of graphQL is to make your intention clear. 
 - ! - it is not ok that the fields are null. 
 - 
+
+## Query Resolvers
+
+- We are going to write the code that produce the data. 
+- We are going to write javascript
+- If you are writing in Java or C#, or python, you can do that with other languages. 
+- GraphQL shema can be understood by any programming language, which menas the logic will be the same. 
+- Resolver is an object. This should have the same shape as the type def.
+- It is important that the name should be same. 
+- 
+
+server.js
+```js
+const resolvers = {
+  Query: {
+    allTweets() {
+      return tweets;
+    },
+    tweet(root, { id }) {
+      return tweets.find((tweet) => tweet.id === id);
+    },
+  },
+};
+
+const server = new ApolloServer({ typeDefs, resolvers });
+```
+
+- Create a fake DB inside the server.js because we are not referring to any DB data. 
+
+```js
+const tweets = [
+  {
+    id: "1",
+    text: "first one!",
+  },
+  {
+    id: "2",
+    text: "second one",
+  },
+];
+
+```
+
+- Vocab: type Query has a field called allTweets. We are going to write a resolver for allTweets fields. 
+- Whatever server is, it will give the root as a first argument and the second is what the user sent. 
+- The shape of the code will look different but the order will always be the same. 
+- 
+
+
+ex 1:
+- Input:
+- User can send an argument called "hello"
+```js
+{
+  tweet(id:"hello"){
+    text
+  }
+}
+```
+
+- Output:
+```js
+{
+  "data": {
+    "tweet": null
+  }
+}
+```
+
+ex 2:
+Input:
+```js
+{
+  tweet(id:"1"){
+    text
+  }
+}
+```
+
+Output:
+```js
+{
+  "data": {
+    "tweet": {
+      "text": "first one!"
+    }
+  }
+}
+```
+
+- JavasScript to find tweet with the specific tweet id. 
+- Usually, you are going to be hitting the SQL code, Prisma code etc. 
+- 
+
+## Mutation Resolver
+- This will allow users to post the query. 
+- _ means you are ignoring the firstone. 
+- __ ignore
+- or you can write root. 
+
+- If you want to create a resolver for the mutation type, you just need to type mutation on the resolvers. You just need to copy the correct fields. 
+
+- server.js on the resolvers.
+```js
+  Mutation: {
+    postTweet(_, { text, userId }) {
+      const newTweet = {
+        id: tweets.length + 1,
+        text,
+      };
+      tweets.push(newTweet);
+      return newTweet;
+    },
+    deleteTweet(_, { id }) {
+      const tweet = tweets.find((tweet) => tweet.id === id);
+      if (!tweet) return false;
+      tweets = tweets.filter((tweet) => tweet.id !== id);
+      return true;
+    },
+  },
+```
+
+- test POST. 
+
+- Create mutation
+
+```js
+mutation {
+  postTweet(text:"I'm new!", userId:"1"){
+    id
+    text
+  }
+}
+```
+
+- Why add userID argument if you are just going to add one to the max length of the Tweet Array?
+
+Output:
+```js
+{
+  "data": {
+    "postTweet": {
+      "id": "3",
+      "text": "I'm new!"
+    }
+  }
+}
+```
+
+- Division is a conceptual division between the Mutation and Resolvers. 
+- 
+
+## Type Resolver. 
+- Show how we can create a resolver function for any fields inside any type, not only fields inside the Query or the Mutation. 
+
+Steps:
+1. Create a user db
+- user has id, fname, lname. 
+
+```js
+let users = [
+  {
+    id: "1",
+    firstName: "nico",
+    lastName: "las",
+  },
+  {
+    id: "2",
+    firstName: "Elon",
+    lastName: "Mask",
+  },
+];
+```
+
+2. Create a new query
+- like to have a dynamic field. 
+- 
+
+- Fullname does not exist so you can't Query, you have to create a resolver for the full name. 
+- 
+
+Testing code:
+Input:
+```js
+{
+  allUsers {
+    id
+    firstName
+    lastName
+    fullName
+  }
+}
+```
+
+Output:
+```js
+{
+  "data": {
+    "allUsers": [
+      {
+        "id": "1",
+        "firstName": "nico",
+        "lastName": "las",
+        "fullName": "nico las"
+      },
+      {
+        "id": "2",
+        "firstName": "Elon",
+        "lastName": "Mask",
+        "fullName": "Elon Mask"
+      }
+    ]
+  }
+}
+```
+
+- External Reference: https://www.apollographql.com/docs/apollo-server/data/resolvers/#resolver-arguments
+
+- When you console log (root), you notice that the graphql was trying to find the fullName twice. 
+- First we go to the query, we have two users to return. GraphQL will call th first and the second fullName. We are going to provide that fullName function in the Mutation. 
