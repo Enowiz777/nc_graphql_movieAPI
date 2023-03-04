@@ -1120,3 +1120,139 @@ Output:
 
 - When you console log (root), you notice that the graphql was trying to find the fullName twice. 
 - First we go to the query, we have two users to return. GraphQL will call th first and the second fullName. We are going to provide that fullName function in the Mutation. 
+
+## 4.9 Relatinoship
+
+- Users can be linked with Tweet. 
+- GraphQL is able to figure out that the Fullname is resolver anca call it. 
+- Users can view what shows up. 
+- The first argument of your resolver gives the data of what is being returned - fullName.
+- We can create another resolver called firstName
+
+- Give tweet the userID.
+- We connect the tweet by adding UserID. We are going to use something like join.
+- We use array.find() to find the user with the id. 
+
+Steps:
+
+1. AllTweet gets called 1st.
+2. author does not exist in the author. 
+3. IT will find an author resolver and give the first argument plus the userid. 
+4. We reutn a type user and the graphQL knows that the type user is.
+5. We are requesting the FullName of the type user. 
+
+Testing:
+
+Input: 
+{
+  allTweets {
+    id
+    text
+    author {
+      fullName
+    
+    }
+  }
+}
+Output:
+{
+  "data": {
+    "allTweets": [
+      {
+        "id": "1",
+        "text": "first one!",
+        "author": {
+          "fullName": "Elon Mask"
+        }
+      },
+      {
+        "id": "2",
+        "text": "second one",
+        "author": {
+          "fullName": "nico las"
+        }
+      }
+    ]
+  }
+}
+
+## 4.10. Documentation
+
+- https://www.apollographql.com/docs/resources/graphql-glossary/#docstring
+- Look at documentation:
+  - It allows you to document your schema. 
+  - Everytime we type, we see what is what. If you are working with the front-end developer, it is important that you document schema. 
+  - 
+  if you comment the document with """comment""", you can make it appear on a documentation section in GraphQL.
+  - You can download Attair GraphQL Client. 
+  - What you have to do is that you have to paste your local host and send request. It will communicate with GraphQL. 
+  - 
+
+## 4.11. Migrating from REST to GraphQL.
+
+- If you want to use GraphQL and Rest on the backend.
+- You can turn the REST API into GraphQL
+
+- Describe the type of this field to 
+- Console:
+
+const movie and you put all the data tha tyou retrieved. 
+- objects.key()
+- Copy all value.
+- You copy all values and align them in rows. 
+- You have to do this because you have to know the type. 
+- You have to state each type of the REST API data. 
+
+Useful comment:
+node-fetch
+node-fetch를 이용해서 Fetch API를 Node.js에서 사용할 수 있습니다.
+npm i node-fetch
+https://www.npmjs.com/package/node-fetch
+
+Movie Type
+```
+type Movie {
+id: Int!
+url: String!
+imdb_code: String!
+title: String!
+title_english: String!
+title_long: String!
+slug: String!
+year: Int!
+rating: Float!
+runtime: Float!
+genres: [String]!
+summary: String
+description_full: String!
+synopsis: String
+yt_trailer_code: String!
+language: String!
+background_image: String!
+background_image_original: String!
+small_cover_image: String!
+medium_cover_image: String!
+large_cover_image: String!
+}
+```
+
+allMovies
+https://yts.mx/api/v2/list_movies.json
+
+movie
+https://yts.mx/api/v2/movie_details.json?movie_id=${id}
+
+- We make sure that we are returning the list of database. 
+- You can fetch the URL in allMovies() resolver. 
+- Turn response in .json. You can return the json.data.movies
+- npm i node-fetch - fetch is not recognized in the node based environment. 
+- Since GraphQL knows the shape, it response with the data. 
+- Though you can request data as REST API
+- 
+
+## Beyond.
+
+- You can create type subscription to post messages in real-time. 
+- Hasura is able to connect DB to the server.
+- You can get Query and Mutation instantly. 
+- You can connect your DB to Hasura and it will automatically give the GraphQL capabilities.
